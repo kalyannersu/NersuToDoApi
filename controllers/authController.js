@@ -4,7 +4,7 @@ const { jwtSecret } = require("../config");
 
 const generateTokens = (user) => {
   const accessToken = jwt.sign({ userId: user._id }, jwtSecret, {
-    expiresIn: "15m",
+    expiresIn: "7d",
   });
   const refreshToken = jwt.sign({ userId: user._id }, jwtSecret, {
     expiresIn: "7d",
@@ -29,6 +29,8 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
+  console.log("Login request received:", { email, password });
+
   try {
     const user = await User.findOne({ email });
     if (!user || !(await user.comparePassword(password))) {
